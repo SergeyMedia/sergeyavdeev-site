@@ -13,7 +13,7 @@ window.MEDIA_BASE_URL = "https://pub-3f80afa1bbf0415ab17996ed1a8d8c91.r2.dev"; /
   window.SITE = {
     name: "Sergey Avdeev",
     tagline: "Photography & video for Seattle businesses",
-    email: "",            // TODO: public contact email (not on the old site)
+    email: "sergeyavmedia@gmail.com",
     phone: "",            // TODO: optional phone
     instagram: "https://www.instagram.com/sergeyvideo/",
     location: "Seattle, WA",
