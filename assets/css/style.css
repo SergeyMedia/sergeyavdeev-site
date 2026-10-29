@@ -122,3 +122,12 @@ main { padding-bottom: 40px; }
 .intro h1 { font-size: 13px; }
 @media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+
+.quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.reviews[data-reviews="services"] .quotes, .reviews[data-reviews="work"] .quotes { grid-template-columns: repeat(2, 1fr); }
+.quote { border-top: 1px solid var(--line); padding-top: 12px; }
+.quote .stars { font-size: 11px; letter-spacing: 2px; color: var(--fg); margin-bottom: 8px; }
+.quote blockquote p { color: #444; font-size: 12.5px; }
+.quote blockquote p + p { margin-top: .6em; }
+.quote figcaption { margin-top: 10px; font-size: 11px; }
+@media (max-width: 900px) { .quotes, .reviews[data-reviews] .quotes { grid-template-columns: 1fr; } }

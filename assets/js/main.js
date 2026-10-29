@@ -132,6 +132,28 @@
     list.forEach(function (v) { host.appendChild(videoEl(v)); });
   });
 
+  // Testimonials (real Google reviews from reviews.js; hidden when none)
+  $$("[data-reviews]").forEach(function (sec) {
+    var R = window.REVIEWS; if (!R || !R.items) return;
+    var list = R.items.filter(function (r) { return !r.pages || r.pages.indexOf(sec.dataset.reviews) > -1; });
+    if (!list.length) return;
+    var wrap = $(".quotes", sec);
+    list.forEach(function (r) {
+      var fig = document.createElement("figure"); fig.className = "quote";
+      var stars = document.createElement("div"); stars.className = "stars"; stars.setAttribute("aria-label", r.rating + " out of 5 stars");
+      stars.textContent = "★★★★★".slice(0, Math.round(r.rating));
+      var q = document.createElement("blockquote");
+      r.text.split("\n").forEach(function (para) { if (para.trim()) { var pp = document.createElement("p"); pp.textContent = para; q.appendChild(pp); } });
+      var cap = document.createElement("figcaption"); cap.className = "muted";
+      var a = document.createElement("a"); a.href = r.url || R.url; a.rel = "noopener"; a.textContent = r.name + " · " + (R.source || "Google") + " review";
+      cap.appendChild(a);
+      fig.appendChild(stars); fig.appendChild(q); fig.appendChild(cap); wrap.appendChild(fig);
+    });
+    var link = $("[data-reviews-link]", sec);
+    if (link) { link.href = R.url; link.textContent = (R.rating ? R.rating.toFixed(1) + " ★ · " : "") + (R.count ? R.count + " reviews · " : "") + "Read more reviews on Google"; }
+    sec.hidden = false;
+  });
+
   // Contact details from SITE config
   $$("[data-email]").forEach(function (el) {
     if (window.SITE.email) { el.innerHTML = '<a href="mailto:' + window.SITE.email + '">' + window.SITE.email + "</a>"; }

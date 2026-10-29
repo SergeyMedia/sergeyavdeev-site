@@ -72,6 +72,10 @@ Objects are uploaded with `Cache-Control: public, max-age=31536000, immutable`, 
 Only one line: change `window.MEDIA_BASE_URL` in `assets/js/media.js`
 (e.g. to a custom domain like `https://media.sergeyavdeev.com` once it's connected to the bucket). The folder layout stays the same.
 
+## Reviews / testimonials
+
+`assets/js/reviews.js` holds real Google reviews (verbatim) for "Sergey Avdeev Media", the overall rating/count, and which page each quote appears on (`pages: ["home", "services", "work"]`). To add one, copy the review text exactly from Google and add an item; remove items to hide them. With an empty `items` list the section disappears.
+
 ## Logo, favicons and social preview
 
 `assets/brand/`: `logo.svg` (traced vector, uses `currentColor`; inlined in the header of every page), `logo.png` / `logo-white.png` (trimmed, transparent), favicons (`favicon-16/32/48.png`, `icon-192/512.png`), and `og-image.jpg` (1200×630 link-preview image). `favicon.ico`, `apple-touch-icon.png` and `site.webmanifest` sit at the site root.
