@@ -1,6 +1,6 @@
 # sergeyavdeev.com
 
-Portfolio site for **Sergey Avdeev** — photography & video for Seattle home, garden and construction businesses.
+Portfolio site for **Sergey Avdeev** — photography & video for Seattle businesses.
 
 Plain HTML/CSS/JS. No build step, no dependencies. Minimal, image-first design with small type.
 
@@ -11,12 +11,12 @@ Plain HTML/CSS/JS. No build step, no dependencies. Minimal, image-first design w
 
 ```
 index.html              Home: full-width hero, selected work, demo reel, short intro
-work/index.html         Photo gallery (filter: Homes / Gardens / Construction) + lightbox, video section
+work/index.html         Photo gallery (filter: Business / Portrait / Lifestyle / Music / Cars) + lightbox, video section
 services/index.html     "Work with me": packages + call to get in touch (linked from nav/footer, not the home page)
 about/index.html        Bio
 contact/index.html      Contact details (no backend form)
 assets/css/style.css    All styles
-assets/js/media.js      ALL photo/video URLs + site details (email, Instagram) — edit this to change content
+assets/js/media.js      ALL photos/videos (R2 paths), categories, hero, site details — edit this to change content
 assets/js/main.js       Renders hero, grids, filters, lightbox and video embeds from media.js
 ```
 
@@ -29,37 +29,50 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-## Adding / changing photos and video
+## Where the photos live
 
-Everything lives in `assets/js/media.js`:
+Photos are served from the Cloudflare R2 bucket **`sergeyavdeev`**, public URL
+`https://pub-3f80afa1bbf0415ab17996ed1a8d8c91.r2.dev` (set in `assets/js/media.js` as `MEDIA_BASE_URL`).
 
-- `HERO` — the home page hero image. Set `HERO.video` to a `.mp4` path to use a muted autoplay loop instead.
-- `PHOTOS` — each item has `path` (location in R2), `placeholder` (temporary image), `category`, `title`, and `featured: true` to show on the home page.
-- `VIDEOS` — YouTube ids (embedded with a lightweight click-to-play thumbnail) or `.mp4` paths on R2.
-- `SITE` — name, email, Instagram, etc. (`email` is still empty → set it to show a mailto link on Contact).
+One folder per gallery category, each with three sizes:
 
-## Switching images to Cloudflare R2 (one-line change)
+```
+business/  portrait/  lifestyle/  music/  cars/  about/
+  <category>/original/<name>.jpg|png   untouched source file (archive; not loaded by the site)
+  <category>/2000/<name>.webp + .jpg   large version (hero, lightbox)  – long edge 2000px, quality 80
+  <category>/800/<name>.webp + .jpg    thumbnail (grid)                – long edge 800px, quality 80
+```
 
-1. Create an R2 bucket, enable public access (an `r2.dev` URL or a custom domain such as `media.sergeyavdeev.com`).
-2. Upload files using the same paths listed in `media.js` (e.g. `homes/01.jpg`, `gardens/02.jpg`, `hero/hero.jpg`).
-3. In `assets/js/media.js` change:
+The site loads the `.webp` files; the `.jpg` copies are there as a fallback/for sharing.
+Objects are uploaded with `Cache-Control: public, max-age=31536000, immutable`, so **give a changed photo a new file name** rather than overwriting an old one (otherwise browsers/CDN may keep showing the old image).
 
-   ```js
-   window.MEDIA_BASE_URL = "";
+## Adding or replacing photos
+
+1. **Make the web sizes.** For each photo create `<name>.webp` (and optionally `.jpg`) at 2000px and 800px on the long edge.
+   Use lowercase names without spaces, e.g. `kitchen-remodel-01`. Example with ImageMagick:
+   ```bash
+   magick in.jpg -resize 2000x2000\> -quality 80 2000/kitchen-remodel-01.webp
+   magick in.jpg -resize 800x800\>   -quality 80 800/kitchen-remodel-01.webp
    ```
-   to
+2. **Upload** to the bucket under `<category>/2000/` and `<category>/800/` (and the untouched file under `<category>/original/` if you want an archive) — via the Cloudflare dashboard (R2 → sergeyavdeev → Upload) or any S3 tool (`aws s3 cp --endpoint-url …`, rclone). Set Content-Type `image/webp` / `image/jpeg`.
+3. **List it in `assets/js/media.js`** in `PHOTOS`:
    ```js
-   window.MEDIA_BASE_URL = "https://media.sergeyavdeev.com";
+   { id: "business/kitchen-remodel-01", category: "business", w: 2000, h: 1333, featured: true },
    ```
+   - `id` = `<folder>/<name>` without size folder or extension.
+   - `featured: true` puts it in "Selected work" on the home page (keep it to ~6).
+   - Order in the list = order in the gallery. Delete an entry to hide a photo (the file can stay in the bucket).
+   - Optional `title: "…"` shows as a caption.
+4. **New category?** Create the folder in the bucket and add it to `CATEGORIES` (`{ id: "homes", label: "Homes" }`); the Work page filter buttons are generated from that list.
+5. **Hero / About photo:** change `HERO.image.id` / `ABOUT_PHOTO.id`. For a looping hero video upload an mp4 (e.g. `video/hero-loop.mp4`, ideally < 10 MB, no audio) and set `HERO.video = "video/hero-loop.mp4"`.
+6. Commit and push to `main` — GitHub Pages redeploys in about a minute.
 
-When `MEDIA_BASE_URL` is set, every image/video URL becomes `MEDIA_BASE_URL + "/" + path`; when empty, the placeholder URLs are used.
+## Switching the image host
 
-Tip: export web-sized JPEGs (~2400px long edge, quality ~80) before uploading.
+Only one line: change `window.MEDIA_BASE_URL` in `assets/js/media.js`
+(e.g. to a custom domain like `https://media.sergeyavdeev.com` once it's connected to the bucket). The folder layout stays the same.
 
 ## Custom domain (later)
 
 Add a `CNAME` file containing `sergeyavdeev.com`, point DNS at GitHub Pages (or move hosting to Cloudflare Pages), then set the domain in the repo's Pages settings.
 
-## Placeholder credits
-
-Temporary images are from [Unsplash](https://unsplash.com) and will be replaced with Sergey's own work.

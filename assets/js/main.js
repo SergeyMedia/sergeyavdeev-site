@@ -10,15 +10,21 @@
   var hero = $("[data-hero]");
   if (hero && window.HERO) {
     var H = window.HERO, el;
-    if (H.video && (window.MEDIA_BASE_URL || H.video.placeholderUrl)) {
+    if (H.video) {
       el = document.createElement("video");
-      el.src = window.mediaUrl(H.video); el.muted = true; el.loop = true; el.autoplay = true; el.playsInline = true;
+      el.src = window.mediaUrl({ path: H.video }); el.muted = true; el.loop = true; el.autoplay = true; el.playsInline = true;
       el.setAttribute("playsinline", ""); el.poster = window.mediaUrl(H.image, 2400);
     } else {
       el = new Image(); el.src = window.mediaUrl(H.image, 2400); el.alt = H.image.alt || ""; el.fetchPriority = "high";
     }
     hero.prepend(el);
   }
+
+  function catLabel(id) { return (window.CATEGORIES.filter(function (c) { return c.id === id; })[0] || {}).label || ""; }
+
+  // About photo
+  var ab = $("[data-about-photo]");
+  if (ab && window.ABOUT_PHOTO) { var ai = new Image(); ai.src = window.mediaUrl(window.ABOUT_PHOTO, 2000); ai.alt = window.ABOUT_PHOTO.alt; ab.appendChild(ai); }
 
   // Gallery grids
   var items = [];
@@ -34,8 +40,9 @@
       img.src = window.mediaUrl(p, 900);
       if (img.complete) img.classList.add("loaded");
       var cap = document.createElement("figcaption");
-      var cat = (window.CATEGORIES.filter(function (c) { return c.id === p.category; })[0] || {}).label || "";
-      cap.textContent = (p.title || "") + (cat ? " — " + cat : "");
+      var cat = catLabel(p.category);
+      img.alt = p.title || (cat + " photography by Sergey Avdeev");
+      cap.textContent = p.title ? p.title + " — " + cat : cat;
       fig.appendChild(img); fig.appendChild(cap);
       grid.appendChild(fig);
       if (featuredOnly) {
@@ -72,8 +79,8 @@
   function show(i) {
     var v = visible(); if (!v.length) return;
     cur = (i + v.length) % v.length;
-    lbImg.src = window.mediaUrl(v[cur].p, 2400); lbImg.alt = v[cur].p.title || "";
-    lbCap.textContent = (v[cur].p.title || "") + "  ·  " + (cur + 1) + " / " + v.length;
+    lbImg.src = window.mediaUrl(v[cur].p, 2400); lbImg.alt = v[cur].p.title || catLabel(v[cur].p.category);
+    lbCap.textContent = (v[cur].p.title || catLabel(v[cur].p.category)) + "  ·  " + (cur + 1) + " / " + v.length;
   }
   function openLb(fig) {
     var v = visible(); show(v.map(function (it) { return it.fig; }).indexOf(fig));
@@ -112,8 +119,8 @@
       box.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
     } else {
       var vid = document.createElement("video");
-      vid.src = window.mediaUrl(v); vid.controls = true; vid.preload = "none"; vid.playsInline = true;
-      if (v.poster) vid.poster = window.MEDIA_BASE_URL ? window.MEDIA_BASE_URL.replace(/\/$/, "") + "/" + v.poster : "";
+      vid.src = window.mediaUrl({ path: v.path }); vid.controls = true; vid.preload = "none"; vid.playsInline = true;
+      if (v.poster) vid.poster = window.mediaUrl({ path: v.poster });
       box.appendChild(vid);
     }
     var cap = document.createElement("div"); cap.className = "video-caption"; cap.textContent = v.title;
