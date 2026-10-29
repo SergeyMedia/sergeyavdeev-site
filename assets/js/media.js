@@ -94,8 +94,6 @@ window.MEDIA_BASE_URL = "https://pub-3f80afa1bbf0415ab17996ed1a8d8c91.r2.dev"; /
     { id: "portrait/seattle-portrait-54", category: "portrait", w: 1333, h: 2000, alt: "Portrait session in Seattle" },
     { id: "portrait/seattle-portrait-60", category: "portrait", w: 1333, h: 2000, alt: "Portrait session in Seattle" },
     { id: "portrait/seattle-portrait-63", category: "portrait", w: 1333, h: 2000, alt: "Portrait session in Seattle" },
-    { id: "portrait/seattle-portrait-41", category: "portrait", w: 2000, h: 1335, alt: "Portrait session in Seattle" },
-    { id: "portrait/seattle-portrait-61", category: "portrait", w: 1333, h: 2000, alt: "Portrait session in Seattle" },
     { id: "lifestyle/dsc-1935", category: "lifestyle", w: 2000, h: 1334 },
     { id: "lifestyle/dsc-9617", category: "lifestyle", w: 2000, h: 1335 },
     { id: "lifestyle/dsc-5923", category: "lifestyle", w: 2000, h: 1335 },
