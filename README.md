@@ -1,6 +1,6 @@
 # sergeyavdeev.com
 
-Portfolio site for **Sergey Avdeev** — photography & video for Seattle businesses.
+Website for **Sergey Avdeev** — digital media marketing (photo, video, social content, AI-assisted marketing) for small & medium businesses.
 
 Plain HTML/CSS/JS. No build step, no dependencies. Minimal, image-first design with small type.
 
@@ -10,9 +10,9 @@ Plain HTML/CSS/JS. No build step, no dependencies. Minimal, image-first design w
 ## Structure
 
 ```
-index.html              Home: full-width hero, selected work, demo reel, short intro
+index.html              Home: full-width hero, positioning line, selected work, demo reel, "How it works" (Plan/Shoot/Publish/Grow)
 work/index.html         Photo gallery (filter: Business / Portrait / Lifestyle / Music / Cars) + lightbox, video section
-services/index.html     "Work with me": packages + call to get in touch (linked from nav/footer, not the home page)
+services/index.html     "Work with me": what I do, process, packages (pricing low-key) + call to get in touch
 about/index.html        Bio
 contact/index.html      Contact details (no backend form)
 assets/css/style.css    All styles
