@@ -152,6 +152,10 @@ main { padding-bottom: 40px; }
 .case-logo { height: 64px; width: auto; opacity: .75; margin-bottom: 16px; }
 .case-result { margin-top: 6px; font-size: 13px; }
 .case-video .video { max-width: 1100px; }
+.case-hero img { display: block; width: 100%; max-width: 1100px; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+.case-hero figcaption, .case-video-cap { margin-top: 8px; font-size: 11px; color: var(--muted); }
+.case-stills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; max-width: 1100px; margin: 0; padding: 0; list-style: none; }
+.case-stills img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
 .case-rows { display: grid; grid-template-columns: 180px minmax(0, 640px); gap: 22px 40px; margin: 0; }
 .case-rows dt { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-top: 2px; border-top: 1px solid var(--line); padding-top: 12px; }
 .case-rows dd { margin: 0; border-top: 1px solid var(--line); padding-top: 12px; }
@@ -159,6 +163,7 @@ main { padding-bottom: 40px; }
 .case-result-line { font-weight: 500; }
 @media (max-width: 700px) {
   .case-card { grid-template-columns: 1fr; gap: 14px; }
+  .case-stills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case-rows { grid-template-columns: 1fr; gap: 6px; }
   .case-rows dd { border-top: 0; padding-top: 0; margin-bottom: 14px; }
 }

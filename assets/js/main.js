@@ -107,8 +107,8 @@
     var wrap = document.createElement("div");
     var box = document.createElement("div"); box.className = "video";
     if (v.youtube) {
-      var t = new Image(); t.loading = "lazy"; t.alt = v.title; t.src = "https://i.ytimg.com/vi/" + v.youtube + "/sddefault.jpg";
-      t.onerror = function () { t.src = "https://i.ytimg.com/vi/" + v.youtube + "/hqdefault.jpg"; };
+      var t = new Image(); t.loading = "lazy"; t.alt = v.title; t.src = v.poster ? window.mediaUrl({ path: v.poster }) : "https://i.ytimg.com/vi/" + v.youtube + "/sddefault.jpg";
+      if (!v.poster) t.onerror = function () { t.src = "https://i.ytimg.com/vi/" + v.youtube + "/hqdefault.jpg"; };
       var play = document.createElement("span"); play.className = "play"; play.setAttribute("aria-hidden", "true");
       box.appendChild(t); box.appendChild(play);
       box.setAttribute("role", "button"); box.setAttribute("tabindex", "0"); box.setAttribute("aria-label", "Play " + v.title);
@@ -132,9 +132,9 @@
     list.forEach(function (v) { host.appendChild(videoEl(v)); });
   });
 
-  // Single YouTube embeds (e.g. case study pages): <div data-youtube="ID" data-title="...">
+  // Single YouTube embeds (e.g. case study pages): <div data-youtube="ID" data-title="..." data-poster="bucket/path.webp">
   $$("[data-youtube]").forEach(function (host) {
-    host.appendChild(videoEl({ youtube: host.dataset.youtube, title: host.dataset.title || "Video" }));
+    host.appendChild(videoEl({ youtube: host.dataset.youtube, title: host.dataset.title || "Video", poster: host.dataset.poster }));
   });
 
   // Case study teaser cards (data: CASE_STUDIES in media.js). data-root = path back to site root.

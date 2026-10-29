@@ -224,10 +224,10 @@ window.MEDIA_BASE_URL = "https://pub-3f80afa1bbf0415ab17996ed1a8d8c91.r2.dev"; /
       url: "case-studies/safe/",
       client: "Save a Forgotten Equine (SAFE)",
       kind: "Nonprofit · Video",
-      result: "$250K raised above goal",
-      summary: "A film about a Washington horse rescue — donations exceeded the goal by $250K, with the video credited as instrumental.",
-      image: "case-studies/safe/cover.webp",
-      alt: "A rescued horse at SAFE, still from the film"
+      result: "$250K above goal · $750K raised",
+      summary: "A film of rescue success stories, shown at SAFE's 2022 Heart of the Horse benefit — the night raised $750,000 against a $500,000 goal.",
+      image: "case-studies/safe/800/hero-rescue-hug.webp",
+      alt: "A woman hugs a rescued horse at SAFE, still from the film"
     }
   ];
 
