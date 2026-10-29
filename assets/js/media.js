@@ -218,6 +218,19 @@ window.MEDIA_BASE_URL = "https://pub-3f80afa1bbf0415ab17996ed1a8d8c91.r2.dev"; /
     { name: "Imagine Convergence", logo: "imagine-convergence", w: 335, h: 240, scale: 1.15 }
   ];
 
+  // Case studies (teaser cards on Home, Work and Work with me). `url` is relative to the site root.
+  window.CASE_STUDIES = [
+    {
+      url: "case-studies/safe/",
+      client: "Save a Forgotten Equine (SAFE)",
+      kind: "Nonprofit · Video",
+      result: "$250K raised above goal",
+      summary: "A film about a Washington horse rescue — donations exceeded the goal by $250K, with the video credited as instrumental.",
+      image: "case-studies/safe/cover.webp",
+      alt: "A rescued horse at SAFE, still from the film"
+    }
+  ];
+
   // Build a URL for a photo. size: 800 (thumbnails) or 2000 (large). Uses WebP.
   window.mediaUrl = function (item, size) {
     var base = window.MEDIA_BASE_URL.replace(/\/$/, "");

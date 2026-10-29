@@ -132,6 +132,27 @@
     list.forEach(function (v) { host.appendChild(videoEl(v)); });
   });
 
+  // Single YouTube embeds (e.g. case study pages): <div data-youtube="ID" data-title="...">
+  $$("[data-youtube]").forEach(function (host) {
+    host.appendChild(videoEl({ youtube: host.dataset.youtube, title: host.dataset.title || "Video" }));
+  });
+
+  // Case study teaser cards (data: CASE_STUDIES in media.js). data-root = path back to site root.
+  $$("[data-cases]").forEach(function (sec) {
+    var list = window.CASE_STUDIES || []; if (!list.length) return;
+    var root = sec.dataset.root || "", wrap = $(".cases", sec);
+    list.forEach(function (c) {
+      var a = document.createElement("a"); a.className = "case-card"; a.href = root + c.url;
+      var img = new Image(); img.src = window.mediaUrl({ path: c.image }); img.alt = c.alt || c.client; img.loading = "lazy"; img.decoding = "async"; img.width = 1280; img.height = 720;
+      var t = document.createElement("div"); t.className = "case-card-text";
+      t.innerHTML = '<p class="muted"></p><h3></h3><p class="case-card-result"></p><p class="muted case-card-sum"></p><p class="case-card-more">Read the case study</p>';
+      t.children[0].textContent = "Case study · " + c.kind; t.children[1].textContent = c.client;
+      t.children[2].textContent = c.result; t.children[3].textContent = c.summary;
+      a.appendChild(img); a.appendChild(t); wrap.appendChild(a);
+    });
+    sec.hidden = false;
+  });
+
   // Client logo row (data: CLIENTS in media.js)
   $$("[data-clients]").forEach(function (sec) {
     var list = window.CLIENTS || []; if (!list.length) return;

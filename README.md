@@ -72,6 +72,10 @@ Objects are uploaded with `Cache-Control: public, max-age=31536000, immutable`, 
 Only one line: change `window.MEDIA_BASE_URL` in `assets/js/media.js`
 (e.g. to a custom domain like `https://media.sergeyavdeev.com` once it's connected to the bucket). The folder layout stays the same.
 
+## Case studies
+
+Each case study is a page under `case-studies/<slug>/index.html` (copy `case-studies/safe/` as a template; paths there use `../../`). Teaser cards on Home, Work and Work with me come from `window.CASE_STUDIES` in `assets/js/media.js` (url, client, kind, result, summary, image path in the bucket). Case study images live in the bucket under `case-studies/<slug>/`. Only publish results the client situation actually supports.
+
 ## Client logos
 
 The "Trusted by" row (Home and Work with me) is driven by `window.CLIENTS` in `assets/js/media.js`. Logo files live in the bucket under `logos/web/<slug>.png` + `.webp` (monochrome #555 on transparent, ~240px tall) with untouched extracts in `logos/original/<slug>.png`. To add a logo: make a gray-on-transparent PNG/WebP, upload both to `logos/web/`, and add `{ name, logo: "<slug>", w, h }` to `CLIENTS`. Display height is normalised automatically from the aspect ratio.
