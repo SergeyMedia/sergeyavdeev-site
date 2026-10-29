@@ -43,14 +43,15 @@ main { padding-bottom: 40px; }
 .intro p { color: #444; }
 .page-title { padding: clamp(32px, 5vw, 64px) var(--pad) 0; }
 
-/* Grid */
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
-.grid figure { position: relative; cursor: zoom-in; background: #f3f3f3; overflow: hidden; }
-.grid img { width: 100%; aspect-ratio: 3/2; object-fit: cover; object-position: center 30%; transition: opacity .4s ease, transform .6s ease; opacity: 0; }
+/* Grid: justified rows (sizes set in main.js from each photo's w/h; no cropping) */
+.grid { display: flex; flex-wrap: wrap; gap: var(--gap); align-items: flex-start; }
+.grid figure { position: relative; cursor: zoom-in; background: #f3f3f3; overflow: hidden; flex: 0 0 auto; width: 300px; max-width: 100%; }
+.grid img { width: 100%; height: 100%; object-fit: cover; transition: opacity .4s ease, transform .6s ease; opacity: 0; }
 .grid img.loaded { opacity: 1; }
 .grid figure:hover img { transform: scale(1.015); }
-.grid figcaption { padding: 8px 0 4px; font-size: 11px; color: var(--muted); background: var(--bg); }
+.grid figcaption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .grid figure.is-hidden { display: none; }
+.grid[data-grid="all"] { min-height: 100vh; } /* reserve space before main.js builds the gallery (no layout shift) */
 
 /* Filters */
 .filters { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 18px; }
@@ -99,11 +100,11 @@ main { padding-bottom: 40px; }
 .site-footer nav { display: flex; gap: 18px; }
 
 @media (max-width: 900px) {
-  .grid, .packages { grid-template-columns: repeat(2, 1fr); }
+  .packages { grid-template-columns: repeat(2, 1fr); }
   .intro, .prose { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .grid, .packages { grid-template-columns: 1fr; }
+  .packages { grid-template-columns: 1fr; }
   .menu-btn { display: block; }
   .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; background: #fff; padding: 8px var(--pad) 16px; }
   .nav.open { display: flex; }

@@ -26,19 +26,58 @@
   var ab = $("[data-about-photo]");
   if (ab && window.ABOUT_PHOTO) { var ai = new Image(); ai.src = window.mediaUrl(window.ABOUT_PHOTO, 2000); ai.alt = window.ABOUT_PHOTO.alt; ab.appendChild(ai); }
 
-  // Gallery grids
-  var items = [];
+  // Gallery grids: justified rows. Every photo keeps its true aspect ratio (no cropping);
+  // each row shares one height and fills the container width. Recomputed on resize and filter change.
+  var items = [], grids = [];
+  function rowTarget(W) { return W < 600 ? 230 : (W < 1000 ? 260 : 320); }
+  function layoutGrid(grid) {
+    var W = grid.clientWidth; if (!W) return;
+    grid._w = W;
+    var gap = W < 600 ? 6 : 12, T = rowTarget(W);
+    grid.style.gap = gap + "px";
+    var figs = $$("figure", grid).filter(function (f) { return !f.classList.contains("is-hidden"); });
+    var row = [], sum = 0;
+    function place(list, h, justify) {
+      list.forEach(function (f, k) {
+        var w = Math.floor(f._ar * h * 100) / 100;
+        f.style.width = w + "px"; f.style.height = Math.round(h * 100) / 100 + "px";
+        f.style.flexGrow = justify && k === list.length - 1 ? "1" : "0";
+        f._img.sizes = Math.ceil(w) + "px";
+      });
+    }
+    for (var i = 0; i < figs.length; i++) {
+      var f = figs[i];
+      row.push(f); sum += f._ar;
+      var h = (W - gap * (row.length - 1)) / sum;
+      if (h < T) {
+        if (row.length > 1) {
+          var hp = (W - gap * (row.length - 2)) / (sum - f._ar);
+          if (hp / T < T / h) { place(row.slice(0, -1), hp, true); row = [f]; sum = f._ar; continue; }
+        }
+        place(row, h, true); row = []; sum = 0;
+      }
+    }
+    if (row.length) place(row, Math.min(T, (W - gap * (row.length - 1)) / sum), false);
+  }
+  function relayout() { grids.forEach(layoutGrid); }
+
   $$("[data-grid]").forEach(function (grid) {
     var featuredOnly = grid.dataset.grid === "featured";
     var list = window.PHOTOS.filter(function (p) { return !featuredOnly || p.featured; });
     list.forEach(function (p) {
       var fig = document.createElement("figure");
       fig.dataset.category = p.category;
+      fig._ar = (p.w && p.h) ? p.w / p.h : 1.5;
+      fig.style.aspectRatio = p.w + " / " + p.h;
       var img = new Image();
-      img.loading = featuredOnly ? "eager" : "lazy"; img.decoding = "async"; img.alt = p.title || p.alt || "";
+      img.loading = featuredOnly ? "eager" : "lazy"; img.decoding = "async";
+      img.width = p.w; img.height = p.h;
       img.onload = function () { img.classList.add("loaded"); };
-      img.src = window.mediaUrl(p, 900);
+      img.sizes = Math.round(fig._ar * 300) + "px";
+      img.srcset = window.mediaUrl(p, 800) + " 800w, " + window.mediaUrl(p, 2000) + " 2000w";
+      img.src = window.mediaUrl(p, 800);
       if (img.complete) img.classList.add("loaded");
+      fig._img = img;
       var cap = document.createElement("figcaption");
       var cat = catLabel(p.category);
       img.alt = p.title || p.alt || (cat + " photography by Sergey Avdeev");
@@ -52,7 +91,16 @@
         fig.addEventListener("click", function () { openLb(fig); });
       }
     });
+    grids.push(grid);
+    layoutGrid(grid);
   });
+  if (grids.length) {
+    if (window.ResizeObserver) {
+      grids.forEach(function (g) { new ResizeObserver(function () { if (g.clientWidth !== g._w) layoutGrid(g); }).observe(g); });
+    } else {
+      window.addEventListener("resize", relayout);
+    }
+  }
 
   // Filters
   var filters = $(".filters");
@@ -64,6 +112,7 @@
       b.addEventListener("click", function () {
         $$("button", filters).forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
         items.forEach(function (it) { it.fig.classList.toggle("is-hidden", c.id !== "all" && it.p.category !== c.id); });
+        relayout();
         if (history.replaceState) history.replaceState(null, "", c.id === "all" ? location.pathname : "#" + c.id);
       });
       filters.appendChild(b);
