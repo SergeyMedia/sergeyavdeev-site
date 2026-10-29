@@ -131,3 +131,9 @@ main { padding-bottom: 40px; }
 .quote blockquote p + p { margin-top: .6em; }
 .quote figcaption { margin-top: 10px; font-size: 11px; }
 @media (max-width: 900px) { .quotes, .reviews[data-reviews] .quotes { grid-template-columns: 1fr; } }
+
+.logos { list-style: none; margin: 0; padding: 8px 0 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 28px 48px; }
+.logos li { display: flex; align-items: center; }
+.logos img { display: block; width: auto; max-width: 180px; opacity: .55; transition: opacity .2s ease; }
+.logos img:hover { opacity: 1; }
+@media (max-width: 600px) { .logos { gap: 22px 30px; } .logos img { max-width: 130px; transform: scale(.85); } }

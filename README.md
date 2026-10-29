@@ -72,6 +72,10 @@ Objects are uploaded with `Cache-Control: public, max-age=31536000, immutable`, 
 Only one line: change `window.MEDIA_BASE_URL` in `assets/js/media.js`
 (e.g. to a custom domain like `https://media.sergeyavdeev.com` once it's connected to the bucket). The folder layout stays the same.
 
+## Client logos
+
+The "Trusted by" row (Home and Work with me) is driven by `window.CLIENTS` in `assets/js/media.js`. Logo files live in the bucket under `logos/web/<slug>.png` + `.webp` (monochrome #555 on transparent, ~240px tall) with untouched extracts in `logos/original/<slug>.png`. To add a logo: make a gray-on-transparent PNG/WebP, upload both to `logos/web/`, and add `{ name, logo: "<slug>", w, h }` to `CLIENTS`. Display height is normalised automatically from the aspect ratio.
+
 ## Reviews / testimonials
 
 `assets/js/reviews.js` holds real Google reviews (verbatim) for "Sergey Avdeev Media", the overall rating/count, and which page each quote appears on (`pages: ["home", "services", "work"]`). To add one, copy the review text exactly from Google and add an item; remove items to hide them. With an empty `items` list the section disappears.

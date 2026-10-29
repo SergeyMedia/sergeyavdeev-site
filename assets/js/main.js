@@ -132,6 +132,23 @@
     list.forEach(function (v) { host.appendChild(videoEl(v)); });
   });
 
+  // Client logo row (data: CLIENTS in media.js)
+  $$("[data-clients]").forEach(function (sec) {
+    var list = window.CLIENTS || []; if (!list.length) return;
+    var ul = $(".logos", sec), base = window.MEDIA_BASE_URL.replace(/\/$/, "");
+    list.forEach(function (c) {
+      var ratio = c.w / c.h, h = Math.max(20, Math.min(46, Math.sqrt(3000 / ratio))) * (c.scale || 1);
+      var li = document.createElement("li");
+      var pic = document.createElement("picture");
+      var src = document.createElement("source"); src.type = "image/webp"; src.srcset = base + "/logos/web/" + c.logo + ".webp";
+      var img = document.createElement("img"); img.src = base + "/logos/web/" + c.logo + ".png"; img.alt = c.name; img.title = c.name;
+      img.loading = "lazy"; img.decoding = "async"; img.height = Math.round(h); img.width = Math.round(h * ratio);
+      img.style.height = Math.round(h) + "px";
+      pic.appendChild(src); pic.appendChild(img); li.appendChild(pic); ul.appendChild(li);
+    });
+    sec.hidden = false;
+  });
+
   // Testimonials (real Google reviews from reviews.js; hidden when none)
   $$("[data-reviews]").forEach(function (sec) {
     var R = window.REVIEWS; if (!R || !R.items) return;

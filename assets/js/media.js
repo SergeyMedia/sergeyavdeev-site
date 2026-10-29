@@ -197,6 +197,27 @@ window.MEDIA_BASE_URL = "https://pub-3f80afa1bbf0415ab17996ed1a8d8c91.r2.dev"; /
     // { title: "Project tour", path: "video/project-tour.mp4", poster: "video/project-tour.jpg" }
   ];
 
+  // Client logos ("Trusted by" row on Home and Work with me). Files live in the bucket at
+  // logos/web/<logo>.png|.webp (gray #555 on transparent) and logos/original/<logo>.png.
+  // To add one: upload both files, then add a line here (w/h = pixel size of the web file; optional scale tweaks visual weight).
+  // Order here = order on the page. Remove a line to hide a logo.
+  window.CLIENTS = [
+    { name: "Sotheby's International Realty", logo: "sothebys-international-realty", w: 630, h: 221 },
+    { name: "Wabi Sabi Farms", logo: "wabi-sabi-farms", w: 271, h: 240, scale: 1.1 },
+    { name: "Pink Salt Peruvian Inspired", logo: "pink-salt", w: 1049, h: 240 },
+    { name: "Abbey Arts", logo: "abbey-arts", w: 358, h: 162 },
+    { name: "Yaima", logo: "yaima", w: 340, h: 240 },
+    { name: "Every Door Real Estate", logo: "every-door-real-estate", w: 461, h: 240 },
+    { name: "SAFE", logo: "safe", w: 301, h: 240 },
+    { name: "OM=mc2 Science & Nonduality", logo: "om-mc2-science-and-nonduality", w: 712, h: 240 },
+    { name: "Mondello Ristorante Italiano", logo: "mondello-ristorante-italiano", w: 928, h: 240 },
+    { name: "Zepto Space", logo: "zepto-space", w: 493, h: 240, scale: 1.15 },
+    { name: "Algorand", logo: "algorand", w: 871, h: 240, scale: 0.9 },
+    { name: "Stone Gardens The Climbers Gym", logo: "stone-gardens", w: 720, h: 202 },
+    { name: "Life Float", logo: "life-float", w: 1574, h: 203, scale: 0.85 },
+    { name: "Imagine Convergence", logo: "imagine-convergence", w: 335, h: 240, scale: 1.15 }
+  ];
+
   // Build a URL for a photo. size: 800 (thumbnails) or 2000 (large). Uses WebP.
   window.mediaUrl = function (item, size) {
     var base = window.MEDIA_BASE_URL.replace(/\/$/, "");
