@@ -35,13 +35,13 @@
       var fig = document.createElement("figure");
       fig.dataset.category = p.category;
       var img = new Image();
-      img.loading = featuredOnly ? "eager" : "lazy"; img.decoding = "async"; img.alt = p.title || "";
+      img.loading = featuredOnly ? "eager" : "lazy"; img.decoding = "async"; img.alt = p.title || p.alt || "";
       img.onload = function () { img.classList.add("loaded"); };
       img.src = window.mediaUrl(p, 900);
       if (img.complete) img.classList.add("loaded");
       var cap = document.createElement("figcaption");
       var cat = catLabel(p.category);
-      img.alt = p.title || (cat + " photography by Sergey Avdeev");
+      img.alt = p.title || p.alt || (cat + " photography by Sergey Avdeev");
       cap.textContent = p.title ? p.title + " — " + cat : cat;
       fig.appendChild(img); fig.appendChild(cap);
       grid.appendChild(fig);
@@ -79,7 +79,7 @@
   function show(i) {
     var v = visible(); if (!v.length) return;
     cur = (i + v.length) % v.length;
-    lbImg.src = window.mediaUrl(v[cur].p, 2400); lbImg.alt = v[cur].p.title || catLabel(v[cur].p.category);
+    lbImg.src = window.mediaUrl(v[cur].p, 2400); lbImg.alt = v[cur].p.title || v[cur].p.alt || catLabel(v[cur].p.category);
     lbCap.textContent = (v[cur].p.title || catLabel(v[cur].p.category)) + "  ·  " + (cur + 1) + " / " + v.length;
   }
   function openLb(fig) {
